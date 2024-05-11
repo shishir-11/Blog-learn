@@ -3,10 +3,12 @@ import './Post.css'
 import TimeAgo from 'react-timeago'
 
 const Post = ({title,summary,content,cover,createdAt,author}) => {
+
+
     return (
         <div className='post'>
             <div className="image">
-                <img src='https://cdn.thewirecutter.com/wp-content/media/2022/10/drones-2048px-0698.jpg'/>
+                <img src={cover}/>
             </div>
             <div className="text">
                 <h2>{title}</h2>

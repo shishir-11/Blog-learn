@@ -1,15 +1,17 @@
-import express, { json } from 'express'
-import cors from 'cors'
-import 'dotenv/config'
-import UserModel from './model/User.js'
-import mongoose from 'mongoose'
-import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
-import cookieParser from 'cookie-parser'
-import multer from 'multer'
-const uploadMiddleware= multer({dest:'uploads/'})
-import fs from 'fs'
-import PostModel from './model/Post.js'
+const express = require('express');
+const { json } = require('express');
+const cors = require('cors');
+require('dotenv').config();
+const UserModel = require('./model/User.js');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const uploadMiddleware = multer({dest:'uploads/'});
+const fs = require('fs');
+const PostModel = require('./model/Post.js');
+
 
 const saltRounds = parseInt(process.env.SALT_ROUNDS)
 const secretKey = process.env.SECRET_KEY
@@ -19,13 +21,23 @@ const uri = `mongodb+srv://${mongodbuser}:${mongodbpass}@cluster0.q4kkbqi.mongod
 const port= 4000;
 const salt = bcrypt.genSaltSync(saltRounds);
 
-await mongoose.connect(uri)
+async function connectToDatabase() {
+    try {
+        await mongoose.connect(uri);
+        console.log('Connected to MongoDB');
+        // Any other initialization code can go here
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+    }
+}
 
+connectToDatabase();
 
 const app = express();
 app.use(cors({credentials:true, origin:'http://localhost:3000'}));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads',express.static(__dirname+'/uploads'));
 
 app.get('/test',(req,res)=>{
     res.json('test ok');
@@ -83,10 +95,16 @@ app.post('/logout',(req,res)=>{
 
 app.post('/create', uploadMiddleware.single('file') ,async (req,res)=>{
     const {originalname,path} = req.file;
+    const fileData = await fs.readFileSync(req.file.path)
+    // console.log(fileData);
+    const binary = Buffer.from(fileData)
+    console.log(binary);
     const parts = originalname.split('.');
     const ext = parts[parts.length-1]
     const newPath = path+'.'+ext
     fs.renameSync(path, newPath)
+    // const fileData = await fs.readFileSync(req.file.path)
+    // console.log(fileData);
 
     const {token} = req.cookies;
     jwt.verify(token, secretKey, {}, async(err,info)=>{
@@ -96,17 +114,28 @@ app.post('/create', uploadMiddleware.single('file') ,async (req,res)=>{
             title,
             summary,
             content,
-            cover:newPath,
+            cover:binary,
             author:info.id
         })
         res.json(postDoc);
     })
 
-
 })
 
 app.get("/post",async(req,res)=>{
-    const posts = await PostModel.find().populate('author',['username']).sort({createdAt:-1}).limit(20);
+    let posts = await PostModel.find().populate('author', ['username']).sort({ createdAt: -1 }).limit(20);
+
+    // Transform the cover field of each post to base64
+    posts = posts.map(post => {
+        if (post.cover instanceof Buffer) { // Check if cover is a Buffer
+            return {
+                ...post.toObject(), // Convert Mongoose document to plain object
+                cover: `data:image/png;base64,${post.cover.toString('base64')}` // Convert cover to base64
+            };
+        } else {
+            return post.toObject(); // Return original post object if cover is not a Buffer
+        }
+    });
     res.json(posts)
 })
 
