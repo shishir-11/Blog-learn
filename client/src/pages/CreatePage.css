@@ -1,0 +1,6 @@
+.create-form{
+    padding: 7%;
+    input{
+        border: solid 1px gray;
+    }
+}

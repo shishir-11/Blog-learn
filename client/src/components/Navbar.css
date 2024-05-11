@@ -1,0 +1,17 @@
+header{
+    display: flex;
+    justify-content:space-around;
+    padding: 5px;
+    align-items: center;
+    color: rgb(77, 76, 76);
+    
+    a{
+        color: inherit;
+        text-decoration: none;    
+    }
+    
+    .navigation{
+        display: flex;
+        gap: 15px;
+    }
+}
