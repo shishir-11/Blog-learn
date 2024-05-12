@@ -17,7 +17,7 @@ const modules = {
           { indent: "-1" },
           { indent: "+1" },
         ],
-        ["link"],
+        ["link","image"],
         ["clean"],
       ],
     //   handlers: {
@@ -66,7 +66,7 @@ const CreatePage = () => {
         <form className='create-form' onSubmit={createNewPost}>
             <input type="title" placeholder='Title' onChange={(ev)=>{setTitle(ev.target.value)}}/>
             <input type="summary" placeholder='Summary' onChange={(ev)=>{setSummary(ev.target.value)}} />
-            <input type="file" onChange={ev=>setFiles(ev.target.files)}/>
+            <input type="file" onChange={ev=>setFiles(ev.target.files)} accept='image/*'/>
             <ReactQuill value={content} modules={modules} formats={formats} onChange={(newValue)=>{setContent(newValue)}}/>
             <button>Create</button>
         </form>

@@ -139,6 +139,18 @@ app.get("/post",async(req,res)=>{
     res.json(posts)
 })
 
+app.get("/post/:id",async(req,res)=>{
+    // res.json('ok')
+    // console.log(req.params.id);
+    var postData = await PostModel.findById(req.params.id).populate('author',['username'])
+    postData = {
+        ...postData.toObject(),
+        cover: `data:image/png;base64,${postData.cover.toString('base64')}`
+    }
+    
+    res.json(postData) 
+})
+
 app.listen(port,()=>{
     console.log('listening on port', port);
 })

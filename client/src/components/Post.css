@@ -1,3 +1,8 @@
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
 .post{
     display: flex;
     gap: 20px;
@@ -56,6 +61,9 @@
         }
     }
 
+    h2{
+        font-size: large;
+    }
 
 
     .info-section{

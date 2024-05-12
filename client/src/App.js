@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { UserContextProvider } from './UserContext';
 import CreatePage from './pages/CreatePage';
+import PostPage from './pages/PostPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path={"/login"} exact element={<Login/>}/>
         <Route path={"/register"} exact element={<Register/>}/>
         <Route path={"/create"} exact element={<CreatePage/>}/>
+        <Route path={'/post/:id'} element = {<PostPage/>}></Route>
       </Routes>
     </div>
     </UserContextProvider>

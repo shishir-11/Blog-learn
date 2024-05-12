@@ -1,11 +1,13 @@
 import React from 'react';
 import './Post.css'
 import TimeAgo from 'react-timeago'
+import { Link } from 'react-router-dom';
 
-const Post = ({title,summary,content,cover,createdAt,author}) => {
+const Post = ({title,summary,content,cover,createdAt,author,_id}) => {
 
 
     return (
+        <Link to={`/post/${_id}`}>
         <div className='post'>
             <div className="image">
                 <img src={cover}/>
@@ -19,7 +21,7 @@ const Post = ({title,summary,content,cover,createdAt,author}) => {
                 <p className='content'>{summary}</p>
             </div>
         </div>
-
+        </Link>
     );
 }
 
