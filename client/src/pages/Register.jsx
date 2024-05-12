@@ -7,7 +7,7 @@ const Register = () => {
     async function register(event){
         
         event.preventDefault();
-        const resp = await fetch('http://localhost:4000/register',{
+        const resp = await fetch('https://server-production-359e.up.railway.app/register',{
             method:'POST',
             body: JSON.stringify({username,password}),
             headers:{'Content-Type':'application/json'},

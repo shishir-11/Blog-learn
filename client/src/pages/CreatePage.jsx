@@ -49,7 +49,7 @@ const CreatePage = () => {
         data.set('file',files[0])
 
         event.preventDefault();
-        const response = await fetch('http://localhost:4000/create',{
+        const response = await fetch('https://server-production-359e.up.railway.app/create',{
             method:'POST',
             body: data, 
             credentials:'include',

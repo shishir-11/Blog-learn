@@ -9,7 +9,7 @@ const Blogs = () => {
         // Function to fetch data from the API
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:4000/post');
+                const response = await fetch('https://server-production-359e.up.railway.app/post');
                 const posts = await response.json();
                 setPosts(posts);
             } catch (error) {

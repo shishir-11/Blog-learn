@@ -7,7 +7,7 @@ const Navbar = () => {
     const {setUserInfo,userInfo} = useContext(UserContext);
 
     useEffect(()=>{
-        fetch('http://localhost:4000/profile',{
+        fetch('https://server-production-359e.up.railway.app/profile',{
             method:'GET',
             credentials:'include',
         }).then(response=>{
@@ -19,7 +19,7 @@ const Navbar = () => {
     },[])
 
     function logout(){
-        fetch('http://localhost:4000/logout',{
+        fetch('https://server-production-359e.up.railway.app/logout',{
             credentials:'include',
             method:'POST',
         })

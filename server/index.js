@@ -94,16 +94,16 @@ app.post('/logout',(req,res)=>{
 })
 
 app.post('/create', uploadMiddleware.single('file') ,async (req,res)=>{
-    const {originalname,path} = req.file;
+    // const {originalname,path} = req.file;
     const fileData = await fs.readFileSync(req.file.path)
     // console.log(fileData);
     const binary = Buffer.from(fileData)
-    console.log(binary);
-    const parts = originalname.split('.');
-    const ext = parts[parts.length-1]
-    const newPath = path+'.'+ext
-    fs.renameSync(path, newPath)
-    // const fileData = await fs.readFileSync(req.file.path)
+    // console.log(binary);
+    // const parts = originalname.split('.');
+    // const ext = parts[parts.length-1]
+    // const newPath = path+'.'+ext
+    // fs.renameSync(path, newPath)
+    // // const fileData = await fs.readFileSync(req.file.path)
     // console.log(fileData);
 
     const {token} = req.cookies;
@@ -147,7 +147,7 @@ app.get("/post/:id",async(req,res)=>{
         ...postData.toObject(),
         cover: `data:image/png;base64,${postData.cover.toString('base64')}`
     }
-    
+
     res.json(postData) 
 })
 
